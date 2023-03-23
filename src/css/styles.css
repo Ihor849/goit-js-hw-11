@@ -89,6 +89,7 @@ img {
   background-color: rgb(127, 212, 255);
   color: black;
   outline: none;
+  cursor: pointer;
 }
 .data-btn:hover {
   transition: background-color 0.3s linear, color 0.3s linear;
@@ -143,19 +144,10 @@ img {
 .info-item {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
   font-size: 10px;
 }
 
-.info-text {
-  font-style: italic;
-  font-size: 15px;
-}
-.info-number {
-  margin: 0;
-  font-size: 12px;
-  font-style: italic;
-}
 .load-more {
   margin: 0 auto;
   margin-bottom: 20px;

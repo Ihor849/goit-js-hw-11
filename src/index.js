@@ -5,6 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import getRefs from './js/getRefs';
 import ImagApiService from './js/API_service';
+import { appendImagesMarkup } from './js/picture-template';
 
 const refs = getRefs();
 const imagApiService = new ImagApiService();
@@ -25,24 +26,31 @@ async function onSearch(e) {
   if (imagApiService.searchQuery === '') {
     return Notiflix.Notify.failure('Oops, Enter a query to search.');
   }
-  //   refs.btnSearch.disabled = true;
+  refs.btnSearch.disabled = true;
+
   imagApiService.resetPage();
 
   try {
     imagApiService.fetchPictures().then(({ hits, total, totalHits }) => {
-      console.log(hits);
+      if (total === 0) {
+        return Notiflix.Notify.failure('Oops, Nothing found for your request.');
+      }
+      appendImagesMarkup(hits);
+      refs.loadMore.classList.remove('is-hidden');
     });
   } catch (error) {
-    // Notiflix.Notify.failure('Something went wrong. Please try again later.');
+    Notiflix.Notify.failure('Something went wrong. Please try again later.');
   }
 }
 
-function appendImagesMarkup() {
-  //
-}
-
 async function onLoadMore() {
-  //
+  try {
+    imagApiService.fetchPictures().then(({ hits, total, totalHits }) => {
+      appendImagesMarkup(hits);
+    });
+  } catch (error) {
+    Notiflix.Notify.failure('Something went wrong. Please try again later.');
+  }
 }
 
 function clearGalleryContainer() {
