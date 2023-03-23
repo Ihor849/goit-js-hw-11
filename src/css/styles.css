@@ -155,10 +155,13 @@ img {
 .load-more.is-hidden {
   display: none;
 }
-.icons {
+.loader {
   margin: 0 auto;
-  width: 100px;
+  width: 50px;
 }
-.icons.hidden {
+.loader.hidden {
   visibility: hidden;
+}
+.material-icons {
+  margin-right: 5px;
 }

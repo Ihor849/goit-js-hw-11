@@ -4,7 +4,7 @@ export default function getRefs() {
     btnSearch: document.querySelector('.search-form > button'),
     gallery: document.querySelector('.gallery'),
     loadMore: document.querySelector('.load-more'),
-    nextPage: document.querySelector('#next-page'),
+    loader: document.querySelector('#next-page'),
     inputSearch: document.querySelector('.search-form > input'),
   };
 }
