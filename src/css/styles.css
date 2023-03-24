@@ -98,6 +98,13 @@ img {
   color: blanchedalmond;
 }
 
+.search-btn:disabled {
+  background-color: rgb(10, 123, 221);
+  border-color: rgba(7, 230, 37, 0.918);
+  color: rgb(108, 114, 119);
+  cursor: none;
+}
+
 .gallery {
   margin-top: 85px;
   margin-bottom: 20px;
@@ -152,13 +159,16 @@ img {
   margin: 0 auto;
   margin-bottom: 20px;
 }
+
 .load-more.is-hidden {
   display: none;
 }
+
 .loader {
   margin: 0 auto;
   width: 50px;
 }
+
 .loader.hidden {
   visibility: hidden;
 }
