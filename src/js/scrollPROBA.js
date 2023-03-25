@@ -13,16 +13,12 @@ const imagApiService = new ImagApiService();
 export { onScroll, onUpTop };
 const refs = getRefs();
 
-console.log(imagApiService);
-console.log(imagApiService.searchQuery);
+// window.addEventListener('scroll', throttle(onScroll, 500));
 
-window.addEventListener('scroll', throttle(onScroll, 500));
 refs.btnUpTop.addEventListener('click', onUpTop);
-console.log(imagApiService.page);
-async function onScroll() {
-  console.log(imagApiService.page);
-  console.log(imagApiService.searchQuery);
 
+async function onScroll() {
+  // console.log(imagApiService.searchQuery);
   const documentRect = document.documentElement.getBoundingClientRect();
   const clientEl = document.documentElement.clientHeight;
   const heightBeforeLoading = 150;
@@ -31,16 +27,12 @@ async function onScroll() {
   //   console.log('высоту окна:', clientEl);
 
   if (documentRect.bottom < clientEl + heightBeforeLoading) {
-    console.log('ggggg');
     imagApiService.fetchPictures().then(({ hits, total, totalHits }) => {
       let totalPage = totalHits / imagApiService.per_page;
-      console.log(totalPage);
-      console.log(totalHits);
-      console.log(imagApiService.per_page);
+
       console.log(imagApiService.searchQuery);
 
       if (totalPage <= imagApiService.page) {
-        console.log();
         console.log('GGGGGGGG');
         Notiflix.Report.info(
           'GALLERY',
@@ -53,11 +45,13 @@ async function onScroll() {
     });
   }
 }
+
 function onUpTop() {
   if (window.pageYOffset > 0) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
+
 let lightbox = new SimpleLightbox('.photo-card a', {
   captions: true,
   captionsData: 'alt',
@@ -65,8 +59,3 @@ let lightbox = new SimpleLightbox('.photo-card a', {
   enableKeyboard: true,
   doubleTapZoom: 5,
 });
-
-// ++++++++++++++++++++++++++++++++++++++++++
-//  window.addEventListener('scroll', e => {
-//    window.scrollTo({ top: 0 });
-//  });

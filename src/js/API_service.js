@@ -26,7 +26,6 @@ export default class ImagApiService {
       );
     }
   }
-  //hits,total,totalHits
 
   incrementPage() {
     this.page += 1;

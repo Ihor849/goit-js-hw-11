@@ -1,3 +1,4 @@
+import throttle from 'lodash.throttle';
 import Notiflix from 'notiflix';
 
 import SimpleLightbox from 'simplelightbox';
@@ -23,21 +24,18 @@ async function onSearch(e) {
   e.preventDefault();
   imagApiService.searchQuery =
     e.currentTarget.elements.searchQuery.value.trim();
-
+  let scrollsearchQuery = imagApiService.searchQuery;
   if (imagApiService.searchQuery === '') {
     return Notiflix.Notify.failure('Oops, Enter a query to search.');
   }
-
-  // imagApiService.resetPage();
   onUpTop();
-  console.log(imagApiService.searchQuery);
+
   try {
     imagApiService.fetchPictures().then(({ hits, total, totalHits }) => {
       if (total === 0) {
         refs.searchForm.reset();
         Notiflix.Notify.failure('Oops, Nothing found for your request.');
       } else {
-        // scrollActivation();
         clearGalleryContainer();
         appendImagesMarkup(hits);
         lightbox.refresh();
@@ -47,7 +45,6 @@ async function onSearch(e) {
         refs.btnUpTop.classList.add('btn-up-top--visible');
       }
 
-      // console.log(hits.length);
       if (totalHits <= hits.length) {
         refs.loadMore.classList.add('is-hidden');
       } else if (totalHits > imagApiService.per_page) {
@@ -70,8 +67,9 @@ function onLoadMore() {
       console.log(totalPages);
       if (totalPages <= imagApiService.page) {
         refs.loadMore.classList.add('is-hidden');
-        Notiflix.Notify.failure(
-          "We're sorry, but you've reached the end of search results."
+        Notiflix.Report.info(
+          'GALLERY',
+          'Were sorry, but youve reached the end of search results.'
         );
       }
     });
@@ -88,11 +86,6 @@ function clearGalleryContainer() {
 function onInputSearche() {
   imagApiService.resetPage();
   refs.btnSearch.disabled = false;
-}
-
-function scrollActivation() {
-  window.addEventListener('scroll', onScroll);
-  refs.loadMore.classList.add('is-hidden');
 }
 
 let lightbox = new SimpleLightbox('.photo-card a', {
