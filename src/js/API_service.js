@@ -5,8 +5,9 @@ export default class ImagApiService {
   constructor() {
     this.searchQuery = '';
     this.page = 1;
-    this.per_page = 5;
+    this.per_page = 40;
   }
+
   async fetchPictures() {
     const options = {
       BASE_URL: `https://pixabay.com/api/`,
@@ -26,6 +27,7 @@ export default class ImagApiService {
     }
   }
   //hits,total,totalHits
+
   incrementPage() {
     this.page += 1;
   }

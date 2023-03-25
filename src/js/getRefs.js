@@ -6,5 +6,6 @@ export default function getRefs() {
     loadMore: document.querySelector('.load-more'),
     loader: document.querySelector('#next-page'),
     inputSearch: document.querySelector('.search-form > input'),
+    btnUpTop: document.querySelector('.btn-up-top'),
   };
 }
