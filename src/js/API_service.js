@@ -2,7 +2,7 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 
 export default class ImagApiService {
-  constructor() {
+  constructor(options) {
     this.searchQuery = '';
     this.page = 1;
     this.per_page = 40;
@@ -17,6 +17,7 @@ export default class ImagApiService {
       const respons = await axios.get(
         `${options.BASE_URL}?key=${options.API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`
       );
+
       this.incrementPage();
 
       return respons.data;

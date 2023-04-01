@@ -7,10 +7,14 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import getRefs from './js/getRefs';
 import ImagApiService from './js/API_service';
 import { appendImagesMarkup } from './js/picture-template';
-import { onScroll, onUpTop } from './js/scrollPROBA';
+// import { onScroll, onUpTop } from './js/scrollPROBA';
 
 const refs = getRefs();
-const imagApiService = new ImagApiService();
+const imagApiService = new ImagApiService({
+  searchQuery: '',
+  page: 1,
+  per_page: 40,
+});
 
 refs.searchForm.addEventListener('submit', onSearch);
 refs.loadMore.addEventListener('click', onLoadMore);
@@ -20,11 +24,12 @@ refs.loadMore.classList.add('is-hidden');
 refs.loader.classList.add('hidden');
 refs.btnUpTop.classList.remove('btn-up-top--visible');
 
-async function onSearch(e) {
+function onSearch(e) {
   e.preventDefault();
-  imagApiService.searchQuery =
-    e.currentTarget.elements.searchQuery.value.trim();
-  let scrollsearchQuery = imagApiService.searchQuery;
+  const request = e.currentTarget.elements.searchQuery.value.trim();
+
+  imagApiService.query = request;
+
   if (imagApiService.searchQuery === '') {
     return Notiflix.Notify.failure('Oops, Enter a query to search.');
   }
@@ -95,3 +100,39 @@ let lightbox = new SimpleLightbox('.photo-card a', {
   enableKeyboard: true,
   doubleTapZoom: 5,
 });
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+refs.btnUpTop.addEventListener('click', onUpTop);
+
+window.addEventListener('scroll', onScroll);
+
+function onScroll() {
+  const documentRect = document.documentElement.getBoundingClientRect();
+  const clientEl = document.documentElement.clientHeight;
+  const heightBeforeLoading = 150;
+  //   console.log('координата top', documentRect.top);
+  //   console.log('координата bottom', documentRect.bottom);
+  //   console.log('высоту окна:', clientEl);
+
+  if (documentRect.bottom < clientEl + heightBeforeLoading) {
+    imagApiService.fetchPictures().then(({ hits, total, totalHits }) => {
+      let totalPage = totalHits / imagApiService.per_page;
+
+      if (totalPage <= imagApiService.page) {
+        Notiflix.Report.info(
+          'GALLERY',
+          'Were sorry, but youve reached the end of search results.'
+        );
+        refs.loadMore.classList.add('is-hidden');
+      }
+      appendImagesMarkup(hits);
+      lightbox.refresh();
+    });
+  }
+}
+
+function onUpTop() {
+  if (window.pageYOffset > 0) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++
